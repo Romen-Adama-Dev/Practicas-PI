@@ -92,7 +92,9 @@ ISR(INT3_vect){
    } 
 }
 
-void loop() {  
+void loop() {
+   // Cuerpo del programa principal
+   // Se comprueba si se ha pulsado alguna tecla del teclado
    boolean pup_pressed = (digitalRead(PUP) == 0);
    boolean pdown_pressed = (digitalRead(PDOWN) == 0);
    boolean pcenter_pressed = (digitalRead(PENTER) == 0);
@@ -100,22 +102,27 @@ void loop() {
    boolean pright_pressed = (digitalRead(PRIGHT) == 0);
    boolean pulled = pup_pressed || pdown_pressed || pcenter_pressed || pleft_pressed || pright_pressed;
    
+   // Se comprueba si se ha pulsado alguna tecla del teclado
    if(pulled){       
-      time_now = millis();      
+      // Se comprueba qué tecla se ha pulsado
+      time_now = millis();
+      // Se comprueba si se ha pulsado la tecla "pcenter" 
       if(time_now - time_before > 500){	 
+         // Si el tiempo transcurrido desde la última vez que se pulsó una tecla es mayor a 500 ms, se ejecuta el código
          time_before = time_now;
-         noInterrupts(); // Deshabilita las interrupciones para evitar problemas de concurrencia
          if(pdown_pressed){
+            // Se comprueba si se ha pulsado la tecla "pdown" y actualiza el valor del contador
             if (contador == 0) {
-               contador = 9999; // Establece el contador en 999 cuando es igual a 0 y se presiona "pdown"
+               contador = 9999; // Establece el contador en 9999 cuando es igual a 0 y se presiona "pdown"
             } else {
                contador = contador - tipoCuenta;
             }
+            // Se comprueba si se ha pulsado la tecla "pup" y actualiza el valor del contador
          } else if(pup_pressed && contador < 9999){
             contador = contador + tipoCuenta;	    
-         } else if(pleft_pressed){
+         } else if(pleft_pressed){ // Se comprueba si se ha pulsado la tecla "pleft" y actualiza el de la suma 1
             tipoCuenta = 1;
-         } else if(pright_pressed){
+         } else if(pright_pressed){ // Se comprueba si se ha pulsado la tecla "pright" y actualiza el de la suma 2
             tipoCuenta = 2;
          } else{
             contador = 0;
@@ -123,11 +130,11 @@ void loop() {
          digitalWrite(SPEAKER, 1);
          tone(SPEAKER,  100, 100);	
          digitalWrite(SPEAKER, 0);
-         interrupts(); // Habilita las interrupciones nuevamente
       }
     }
 }
 
+// Función para visualizar un número en el display
 void setNumber(int number, int pin){      
    PORTA = tabla_7segm[number];   
    digitalWrite(pin, 0);
