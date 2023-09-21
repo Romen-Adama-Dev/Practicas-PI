@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Obtén la fecha del sistema en el formato deseado (YYYY-MM-DD)
-fecha_del_dia=$(date +'%Y-%m-%d')
+fecha_del_dia=$(date +'%d-%m-%Y')
 
 # Directorio raíz del repositorio
 repositorio_dir="/w/Universidad/PI/Practicas-PI"
