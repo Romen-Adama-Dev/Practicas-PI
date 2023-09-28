@@ -10,7 +10,7 @@
 #define PRIGHT    30    //  PC[7] pulsador right 
 #define PDOWN     31    //  PC[6] pulsador down
 #define PLEFT     32    //  PC[5] pulsador left
-#define PENTER  33    //  PC[4] pulsador entrar
+#define PENTER    33    //  PC[4] pulsador entrar
 #define PUP       34    //  PC[3] pulsador up
 #define SPEAKER   37    //  PC[0] speaker 
 
@@ -33,10 +33,10 @@
 #define D1 46   // El pin 46 controla el cátodo común del dígito de las unidades de millar (D1)
 
 // Mapeo matricial para las teclas del teclado
-char teclado_map[][3] = {  {'1','2','3'},
-            {'4','5','6'},
-            {'7','8','9'},
-            {'*','0','#'}  };
+char teclado_map[][3] = {   {'1','2','3'},
+                            {'4','5','6'},
+                            {'7','8','9'},
+                            {'*','0','#'}  };
 
 // Tabla de segmentos para mostrar dígitos en el display de 7 segmentos
 unsigned char tabla_7segm[10] = {0x3F, 0x06, 0x5B, 0x4F, 0x66, 0x6D, 0x7D, 0x07, 0x7F, 0x67};
