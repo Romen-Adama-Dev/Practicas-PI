@@ -1,29 +1,29 @@
 /* Práctica Lab1: Interfaces paralelos
    * Entrega de la Practica 1
-   * Creado: 		27 septiembre 2022
-   * Autor:			Romen Adama Caetano Ramirez
+   * Creado:     27 septiembre 2022
+   * Autor:     Romen Adama Caetano Ramirez
 */
 
 // Definición para pulsadores
 // PORTC: PC[7:0] --> PINES 30-31-32-33-34-35-36-37
 
-#define PRIGHT  	30    //	PC[7] pulsador right 
-#define PDOWN   	31    //	PC[6] pulsador down
-#define PLEFT   	32    //	PC[5] pulsador left
-#define PENTER 	33    //	PC[4] pulsador entrar
-#define PUP     	34    //	PC[3] pulsador up
-#define SPEAKER 	37    // 	PC[0] speaker 
+#define PRIGHT    30    //  PC[7] pulsador right 
+#define PDOWN     31    //  PC[6] pulsador down
+#define PLEFT     32    //  PC[5] pulsador left
+#define PENTER  33    //  PC[4] pulsador entrar
+#define PUP       34    //  PC[3] pulsador up
+#define SPEAKER   37    //  PC[0] speaker 
 
 /*
 // Definiciones para teclado/cátodos de display (para el manejo de los 4 dígitos del display de forma entrelazada)
 // PORTL: PL[7:0] --> PINES 42-43-44-45-46-47-48-49
-//														 R1-R2-R3-R4-D1-D2-D3-D4 --> FILAS_TECLADO (R) | CÁTODOS DISPLAY (D)
-#define D4    0xFE    	// 1111 1110 visualiza 	unidades
-#define D3    0xFD    	// 1111 1101 		"				decenas
-#define D2    0xFB    	// 1111 1011 		"				centenas
-#define D1    0xF7    	// 1111 0111 		"				millares
-#define DOFF  0xFF    	// 1111 1111 todos apagados: todos los cátados comunes a "1"
-#define DON   0xC0    	// 1111 0000 todos encendidos: todos los cátodos comunes a "0"
+//                             R1-R2-R3-R4-D1-D2-D3-D4 --> FILAS_TECLADO (R) | CÁTODOS DISPLAY (D)
+#define D4    0xFE      // 1111 1110 visualiza  unidades
+#define D3    0xFD      // 1111 1101    "       decenas
+#define D2    0xFB      // 1111 1011    "       centenas
+#define D1    0xF7      // 1111 0111    "       millares
+#define DOFF  0xFF      // 1111 1111 todos apagados: todos los cátados comunes a "1"
+#define DON   0xC0      // 1111 0000 todos encendidos: todos los cátodos comunes a "0"
 */
 
 //Otra forma de definición de señales de cátodos para manejo de forma individual 
@@ -33,10 +33,10 @@
 #define D1 46   // El pin 46 controla el cátodo común del dígito de las unidades de millar (D1)
 
 // Mapeo matricial para las teclas del teclado
-char teclado_map[][3] = { {'1','2','3'},
-                          {'4','5','6'},
-                          {'7','8','9'},
-                          {'*','0','#'}};
+char teclado_map[][3] = {  {'1','2','3'},
+            {'4','5','6'},
+            {'7','8','9'},
+            {'*','0','#'}  };
 
 // Tabla de segmentos para mostrar dígitos en el display de 7 segmentos
 unsigned char tabla_7segm[10] = {0x3F, 0x06, 0x5B, 0x4F, 0x66, 0x6D, 0x7D, 0x07, 0x7F, 0x67};
@@ -80,13 +80,13 @@ void setup() {
   sei();
 
   // Menú de opciones
-  Serial.println("---Menu---");
+  Serial.println("---Menu Practica 1---");
   Serial.println("Contador de 3 digitos");
   Serial.println("PUP: Incrementa el contador");
   Serial.println("PDOWN: Decrementa el contador");
   Serial.println("PENTER: Puesta a cero (reset) del contador");
-  Serial.println("PLEFT: El contador incrementará o decrementará su cuenta de 1 en 1");
-  Serial.println("PRIGHT: El contador incrementará o decrementará su cuenta de 2 en 2.");
+  Serial.println("PLEFT: El contador incrementara o decrementara su cuenta de 1 en 1");
+  Serial.println("PRIGHT: El contador incrementara o decrementara su cuenta de 2 en 2.");
   Serial.println("Inicializacion del contador entre 000 y 999 mediante el teclado de 4x3");
   Serial.println("--------------------------------------------------------------------------------------------------------------------");
   Serial.println("--Modos--");
@@ -118,6 +118,18 @@ void loop() {
         vCount = 1;
       } else if (pright_pressed) {
         vCount = 2;
+      } else if(pdown_pressed && contador == 0 && vCount == 1){
+   contador = 999;
+      } else if(pdown_pressed && contador == 0 && vCount == 2){
+   contador = 998;
+      } else if(pdown_pressed && contador == 1 && vCount == 2){
+   contador = 999;
+      } else if(pup_pressed && contador == 999 && vCount == 1){
+   contador = 0;
+      } else if(pup_pressed && contador == 998 && vCount == 2){
+   contador = 0;
+      } else if(pup_pressed && contador == 999 && vCount ==2){
+   contador = 1;
       } else {
         contador = 0;
       }
@@ -151,51 +163,75 @@ void loop() {
   }
 }
 
+/*
+  Descripción: Este programa maneja un teclado y un display de siete segmentos.
+*/
+
+// Función para leer el teclado y actualizar el buffer de lectura
 void teclado(int digit) {
   /*
-    Este método lee el PINL para verificar si se ha seleccionado alguna fila del teclado
-    y actualiza el buffer de lectura.
-    - Parámetro digit: la columna del teclado
+    Descripción: Lee el estado del PINL para verificar si se ha seleccionado alguna fila del teclado
+    y actualiza el buffer de lectura si se cumple la condición de tiempo.
+    
+    Parámetros:
+      - digit: La columna del teclado.
   */
+  
   int val = PINL >> 4;
   int fila = getRow(val);
+  
   if (fila == -1) return;
+  
   time_now2 = millis();
   if (time_now2 - time_before2 > 500) {
     time_before2 = time_now2;
-    buffer = buffer + teclado_map[fila][digit]; // Actualizamos el buffer
+    buffer += teclado_map[fila][digit]; // Actualizamos el buffer
   }
 }
 
+// Función para determinar la fila seleccionada en el teclado
 int getRow(int val) {
   /*
-    Este método verifica el número pasado (leído en PINL) para determinar si se ha seleccionado alguna fila.
-    - Parámetro val: el número pasado.
-    - Devuelve: el número de fila si se ha seleccionado alguna, o -1 si no se ha seleccionado ninguna.
+    Descripción: Verifica el número pasado (leído en PINL) para determinar si se ha seleccionado alguna fila.
+    
+    Parámetros:
+      - val: El número pasado.
+    
+    Devuelve: El número de fila si se ha seleccionado alguna, o -1 si no se ha seleccionado ninguna.
   */
+  
   switch (val) {
     case 7:
+      // Caso 7: La fila 0 está seleccionada en el teclado.
       return 0;
     case 11:
+      // Caso 11: La fila 1 está seleccionada en el teclado.
       return 1;
     case 13:
+      // Caso 13: La fila 2 está seleccionada en el teclado.
       return 2;
     case 14:
+      // Caso 14: La fila 3 está seleccionada en el teclado.
       return 3;
     default:
+      // Si no se encuentra ninguna fila seleccionada, retornamos -1.
       return -1;
   }
 }
 
+// Función para mostrar un número en el display de siete segmentos
 void showNumber(int number, int pin) {
   /*
-    Este método muestra el número solicitado en el display de siete segmentos
+    Descripción: Muestra el número solicitado en el display de siete segmentos
     y pone un 0 en el pin correspondiente.
-    - Parámetro number: el número a mostrar.
-    - Parámetro pin: el pin correspondiente (D4, D3, D2, D1, ...).
+    
+    Parámetros:
+      - number: El número a mostrar.
+      - pin: El pin correspondiente (D4, D3, D2, D1, ...).
   */
+  
   PORTA = tabla_7segm[number];
-  digitalWrite(pin, 0);
+  digitalWrite(pin, LOW);
 }
 
 ISR(INT3_vect) {
