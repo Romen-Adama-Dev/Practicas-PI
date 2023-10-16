@@ -54,7 +54,7 @@ unsigned long time_before2 = 0;
 String buffer = "";
 int vCount = 1;     // Variable para el tipo de cuenta del contador (1 o 2)
 int modo = 1;       // Variable para guardar el modo de visualización
-volatile int temperatura; // Variable para guardar la temperatura medida con el sensor
+volatile int temp; // Variable para guardar la temperatura medida con el sensor
 boolean mTemp;
 
 void setup() {
@@ -62,16 +62,16 @@ void setup() {
   Serial.begin(9600);
 
   // Configuración de puertos y pines
-  DDRA = 0xFF;       // Programar PORTA como salida (control del display de 7 segmentos)
-  PORTA = 0xFF;     // Todos los segmentos a "1": encendidos
+  DDRA = 0xFF;          // Programar PORTA como salida (control del display de 7 segmentos)
+  PORTA = 0xFF;         // Todos los segmentos a "1": encendidos
 
-  DDRL = 0x0F;       // Configuración de filas_teclado (R) y cátodos display (D)
-  PORTL = 0xFF;     // Activación de resistencias pull-up en las entradas de las filas de teclado y display
+  DDRL = 0x0F;            // Configuración de filas_teclado (R) y cátodos display (D)
+  PORTL = 0xFF;           // Activación de resistencias pull-up en las entradas de las filas de teclado y display
 
-  DDRC = 0x01;       // Configuración del PORTC
-  PORTC = 0xFE;     // Activación de resistencias pull-up en todas las entradas excepto PC0
+  DDRC = 0x01;          // Configuración del PORTC
+  PORTC = 0xFE;         // Activación de resistencias pull-up en todas las entradas excepto PC0
 
-  pinMode(STemp, INPUT); // Asignación del pin 54 (sensor temperatura) como entrada
+  pinMode(STemp, INPUT);  // Asignación del pin 54 (sensor temperatura) como entrada
 
   // Configuración de interrupciones
   cli();
@@ -90,7 +90,7 @@ void setup() {
   Serial.println("Inicializacion del contador entre 000 y 999 mediante el teclado de 4x3");
   Serial.println("--------------------------------------------------------------------------------------------------------------------");
   Serial.println("--Modos--");
-  Serial.println("1.- Modo normal de visualizacion (tres digitos): OFF-centenas-decenas-unidades");
+  Serial.println("1.- Modo normal de visualizacion (Turnomatic): ");
   Serial.println("2.- Modo reducido-inferior de visualizacion (dos digitos): OFF-OFF-decenas-unidades");
   Serial.println("3.- Modo reducido-superior de visualizacion (dos digitos): decenas-unidades-OFF-OFF");
 }
@@ -137,7 +137,7 @@ void loop() {
     // Generación de señal acústica
     digitalWrite(SPEAKER, 1);
     tone(SPEAKER,  300, 100);
-    delay(100);
+    delay(50);
     digitalWrite(SPEAKER, 0);
   }
 
@@ -149,7 +149,7 @@ void loop() {
       modo = opcion; // Cambio de modo
     }
   }
-
+  
   // Inicialización del contador desde el buffer de entrada
   if (buffer[buffer.length() - 1] == '#') {
     int counter = 0;
@@ -240,7 +240,7 @@ ISR(INT3_vect) {
   int pin;
   int numeroAMostrar;
   if (mTemp) {
-    numeroAMostrar = temperatura;
+    numeroAMostrar = temp;
   } else {
     numeroAMostrar = contador;
   }
@@ -281,6 +281,12 @@ ISR(INT3_vect) {
 
 ISR(INT2_vect) {
   // Cuerpo de la subrutina del servicio de interrupción para INT2 (lectura de temperatura)
-  temperatura = (5 * analogRead(STemp) * 100) / 1024;
+  /* 
+  * analogRead(STemp) obtiene el valor analógico del pin STemp
+  * El valor analógico se multiplica por 5 por voltaje del sensor
+  * Se multiplica por 100 para obtener una temperatura en centenas de grados Celsius
+  * Se divide por 1024 para escalar el valor
+  */
+  temp = (5 * analogRead(STemp) * 100) / 1024;
   mTemp = !mTemp;
 }
