@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8' standalone='yes'?>
 <WORKSPACE>
  <FRAME activewindow="0">
-  <PLACEMENT>2c0000000200000003000000ffffffffffffffffffffffffffffffffad010000010000005b07000064030000</PLACEMENT>
+  <PLACEMENT>2c0000000200000003000000ffffffffffffffffffffffffffffffffd2010000ad0000008007000010040000</PLACEMENT>
   <WINDOW type="default" module="ISIS"/>
   <WINDOW type="default" module="VSMSTUDIO">
    <FILE ACTIVE="TRUE" NAME="ATmega2560/main.ino"/>
@@ -44,16 +44,16 @@
      <ITEM name="nItems">0</ITEM>
     </PROPERTIES>
    </POPUP>
-   <POPUP w="1016" x="22" flags="00000001" y="212" h="265" pid="0" iid="13">
+   <POPUP w="1016" x="592" flags="00000001" y="738" h="265" pid="0" iid="11">
     <PROPERTIES/>
    </POPUP>
-   <POPUP w="1016" x="38" flags="00000001" y="730" h="265" pid="0" iid="14">
+   <POPUP w="695" x="98" flags="00000001" y="189" h="453" pid="0" iid="15">
     <PROPERTIES/>
    </POPUP>
    <POPUP w="78" x="1479" flags="00000013" y="105" h="886" pid="4097" iid="4097">
     <PROPERTIES/>
    </POPUP>
-   <POPUP w="450" x="208" flags="00008023" y="478" h="250" pid="0" iid="39">
+   <POPUP w="450" x="138" flags="00008023" y="229" h="250" pid="0" iid="39">
     <PROPERTIES>
      <ITEM name="AutoEcho">0</ITEM>
      <ITEM name="HexMode">0</ITEM>
