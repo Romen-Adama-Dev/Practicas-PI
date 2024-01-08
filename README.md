@@ -11,7 +11,7 @@ Welcome to the repository for the "Peripherals and Interfaces" course, part of t
 Enhance your theoretical understanding with interactive quizzes:
 - [Module 1 Quiz](https://quizizz.com/admin/quiz/65590bc7aed3d305eb6e9b5a/pi-teoria-modulo-1-y-2?searchLocale=)
 - [Module 2 Quiz](https://quizizz.com/admin/quiz/655a4f58dc61774b6bd8eaeb/pi-teoria-modulo-2?source=admin&trigger=quizPage)
-- [Module 3 Quiz]([https://quizizz.com/admin/quiz/655a4f58dc61774b6bd8eaeb/pi-teoria-modulo-2?source=admin&trigger=quizPage](https://quizizz.com/admin/quiz/65943b183f01f1472dd5c3fa?source=quiz_share))
+- [Module 3 Quiz](https://quizizz.com/admin/quiz/655a4f58dc61774b6bd8eaeb/pi-teoria-modulo-2?source=admin&trigger=quizPage](https://quizizz.com/admin/quiz/65943b183f01f1472dd5c3fa?source=quiz_share)
 
 ## Getting Started
 1. Clone or download this repository to your local machine.
